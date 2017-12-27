@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>开发人员</title>
+    <link rel="stylesheet" type="text/css" href="../css/public.css">
+    <link rel="stylesheet" href="http://at.alicdn.com/t/font_469843_kazbstwhj4qjjor.css">
+    <link rel="stylesheet" type="text/css" href="../css/guanliyuan.css">
+    <link rel="stylesheet" type="text/css" href="../css/exploit.css">
+    <style>
+    </style>
+</head>
+<body>
+<!--头部-->
+<div class="head clfix">
+    <div class="head_left">bug管理系统</div>
+    <div class="fr">
+        <div class="head_hello fl">
+            <span class="iconfont icon-renwu"></span>
+            <span>您好，</span>
+            <span>项目经理！</span>
+        </div>
+        <div class="quit fl">
+            退出
+        </div>
+    </div>
+</div>
+<!--导航-->
+<div class="nav_lf fl">
+    <ul>
+        <li class="onli">项目列表</li>
+        <li>bug列表</li>
+    </ul>
+</div>
+<!-- 右边内容    -->
+<div class="right fl">
+    <table id="content" border="1" cellpadding="0" cellspacing="0">
+        <tr>
+            <td>项目编号</td>
+            <td>81</td>
+        </tr>
+        <tr>
+            <td>项目名称</td>
+            <td>测试项目</td>
+        </tr>
+        <tr>
+            <td>项目描述</td>
+            <td>折扣价热了就情侣款我就看你放大镜拉伸慷慨大方撒旦法</td>
+        </tr>
+        <tr>
+            <td rowspan="4">项目成员</td>
+            <td>刘麒 </td>
+        </tr>
+        <tr>
+            <td>刘麒 </td>
+        </tr>
+        <tr>
+            <td>刘麒 </td>
+        </tr>
+        <tr>
+            <td>刘麒 </td>
+        </tr>
+
+    </table>
+</div>
+</body>
+<script src="../js/ajax.js"></script>
+<script src="../js/config.js"></script>
+
+<script>
+
+var log = console.log.bind(console)
+var table = document.getElementById('content')
+
+var search = window.location.search
+var id = search.split('=')[1]
+
+
+getProjectInfo(id)
+function getProjectInfo(id) {
+    ajax({
+        type: 'get',
+        url: config.url + '/php/getprojectbyid.php?id=' + id,
+        dataType: 'json',
+        success: function(data) {
+            var html = ""
+            // var project = data
+            log(data)
+            var proId = data["id"]
+            var proName = data["name"]
+            var proDesc = data["description"]
+            var members = data["members"]
+
+        }
+    })
+}
+
+
+
+
+
+</script>
+</html>

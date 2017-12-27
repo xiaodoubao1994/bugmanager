@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>我的项目</title>
+	<link rel="stylesheet" type="text/css" href="../css/public.css">
+	<link rel="stylesheet" href="http://at.alicdn.com/t/font_469843_kazbstwhj4qjjor.css">
+	<link rel="stylesheet" type="text/css" href="../css/guanliyuan.css">
+
+</head>
+<body>
+	<!--导航部分-->
+	<div class="nav">
+		<div class="nav_box clfix">
+			<div class="nav_left">bug管理系统</div>
+			<div class="nav_right clfix">
+				<div class="quit">
+					退出
+				</div>
+				<div class="nav_hello">
+					<span class="iconfont icon-renwu"></span>
+					<span>您好，</span>
+					<span>项目经理！</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--内容区域-->
+	<div class="add_box" id="add_box">
+		<div class="add clfix">
+			<div class="add_icon">
+				<i class="iconfont icon-tianjia"></i>
+			</div>
+			<div class="add_text">创建项目</div>
+		</div>
+	</div>
+	<!-- 项目内容部分 -->
+	<div class="item_box" id="item_box">
+		<div class="closed iconfont icon-cha" id="closed"></div>
+		<ul class="information_box clfix">
+			<li>项目信息</li>
+		</ul>
+		<div class="information_text">
+			<div class="information_name">
+				<div class="information_name_text clfix">
+					<div class="information_name_left">项目名称</div>
+					<input type="text"  id="pro-name" class="information_name_input">
+				</div>
+				<div class="information_name_text information_name_miaoshu clfix">
+					<div  class="information_name_left">项目描述</div>
+					<textarea id="pro-desc"></textarea>
+				</div>
+				<div class="information_name_text clfix">
+					<div class="information_name_left">成员管理</div>
+					<div class="information_name_right">
+						<div id="menbers">
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<input type="button" id="btn-create" class="item_btn" value="确认">
+	</div>
+	<div id="shadow"></div>
+</body>
+<script src="../js/ajax.js"></script>
+<script src="../js/config.js"></script>
+<script>
+	var add_box = document.getElementById("add_box");
+	var shadow = document.getElementById("shadow");
+	var closed01 = document.getElementById("closed");
+	var item_box = document.getElementById("item_box");
+	var menbersDiv = document.getElementById('menbers')
+	var btnCreate = document.getElementById('btn-create')
+
+	var proNameInput = document.getElementById('pro-name')
+	var proDescInput = document.getElementById('pro-desc')
+
+
+	add_box.onclick = function(){
+		shadow.style.display = "block";
+		item_box.style.display = "block";
+	}
+	closed01.onclick = function(){
+		shadow.style.display = "none";
+		item_box.style.display = "none";
+	}
+
+
+	getUser()
+	function getUser(){
+		ajax({
+			type: 'get',
+			url: config.url + '/php/users.php',
+			dataType: 'json',
+			success: function(data){
+				// console.log(data)
+				var str = ""
+				for (var i = 0; i < data.length; i++) {
+					var user = data[i]
+					var userid = user['id']
+					var username = user['username']
+					var userpwd = user['userpwd']
+					var type = user['type']
+					str += `
+						<label><input type="checkbox" class="member-box" value=${userid}>${username}</label>
+					`
+				}
+				menbersDiv.innerHTML = str
+			}
+		})
+	}
+
+
+	// 创建
+	btnCreate.onclick = function() {
+		var proName = proNameInput.value
+		var proDesc = proDescInput.value
+
+		var members = []
+
+		var membersBox = menbersDiv.getElementsByClassName('member-box')
+
+		for (var i = 0; i < membersBox.length; i++) {
+			var box = membersBox[i]
+			if (box.checked) {
+				members.push(box.value)
+			}
+		}
+		console.log("members:", members)
+
+		ajax({
+			type: 'get',
+			dataType:'json',
+			url: config.url + '/php/createproject.php',
+			data: {
+				name: proName,
+				description: proDesc,
+				members: members
+			},
+			success: function(json) {
+				// alert(json['msg'])
+				shadow.style.display = "none";
+				item_box.style.display = "none";
+			}
+		})
+	}
+
+</script>
+</html>

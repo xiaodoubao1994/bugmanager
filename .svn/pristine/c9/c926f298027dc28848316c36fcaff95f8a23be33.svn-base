@@ -1,0 +1,26 @@
+<?php  
+  require_once("config.php");
+
+  $sql = "select * from bug";
+
+  $result = mysql_query($sql);
+  // echo $result;
+
+  $list = array();
+
+  while($item = mysql_fetch_row($result)) {
+    $obj = array();
+    $obj["id"] = $item[0];
+    $obj["title"] = $item[1];
+    $obj["description"] = $item[2];
+    $obj["project_id"] = $item[3];
+    $obj["tester_id"] = $item[3];
+    $obj["assign_id"] = $item[3];
+    $obj["status"] = $item[3];
+    $obj["level"] = $item[3];
+    $list[] = $obj;
+  }
+
+  echo json_encode($list);
+
+?>

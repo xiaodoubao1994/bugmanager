@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>开发人员</title>
+    <link rel="stylesheet" type="text/css" href="../css/public.css">
+    <link rel="stylesheet" href="http://at.alicdn.com/t/font_469843_kazbstwhj4qjjor.css">
+    <link rel="stylesheet" type="text/css" href="../css/guanliyuan.css">
+    <link rel="stylesheet" type="text/css" href="../css/exploit.css">
+    <style>
+
+    </style>
+</head>
+<body>
+<!--头部-->
+<div class="head clfix">
+    <div class="head_left">bug管理系统</div>
+    <div class="fr">
+        <div class="head_hello fl">
+            <span class="iconfont icon-renwu"></span>
+            <span>您好，</span>
+            <span>项目经理！</span>
+        </div>
+        <div class="quit fl">
+            退出
+        </div>
+    </div>
+</div>
+<!--导航-->
+<div class="nav_lf fl">
+    <ul>
+        <li class="onli">项目列表</li>
+        <li>bug列表</li>
+    </ul>
+</div>
+<!-- 右边内容    -->
+<div class="right fl">
+    <table id="content" border="1" cellpadding="0" cellspacing="0">
+        <tr>
+            <th>项目编号</th>
+            <th>项目名称</th>
+            <th>项目人员</th>
+            <th>操作</th>
+        </tr>
+        <tr id="1">
+            <td>1</td>
+            <td>许文强</td>
+            <td>123</td>
+            <td>项目经理</td>
+            <td>
+                <span class="edit">修改</span>
+                <i>|</i>
+                <span class="delete">删除</span>
+            </td>
+        </tr>
+        <tr id="22">
+            <td>22</td>
+            <td>李梦成</td>
+            <td>123</td>
+            <td>测试人员</td>
+            <td>
+                <span class="edit">修改</span>
+                <i>|</i>
+                <span class="delete">删除</span>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="5"><span id="addUser" class="mr fr">新增员工</span></td>
+        </tr>
+    </table>
+</div>
+</body>
+<script src="../js/ajax.js"></script>
+<script src="../js/config.js"></script>
+
+<script>
+
+var table = document.getElementById('content')
+
+ajax({
+    type: 'get',
+    url: config.url + '/php/projects.php',
+    dataType: 'json',
+    success: function(data) {
+        console.log(data)
+    }
+})
+
+
+</script>
+</html>

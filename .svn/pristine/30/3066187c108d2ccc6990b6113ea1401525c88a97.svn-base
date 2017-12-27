@@ -1,0 +1,24 @@
+用户表(userinfo)
+	Id: interger  编号
+	username: varchar 用户名
+	userpwd: varchar 密码
+	type: integer  类别  1： 项目经理 2：开发人员 3：测试人员
+
+项目表（project）
+	Id :  integer  编号
+	name: string 项目名称
+	description: string 描述
+
+项目用户表 (project_user)
+	project_id : integer 项目id
+	user_id : integer  用户Id
+
+BUG表 （bug）
+	Id :  integer    编号
+	title:  varchar  bug名称
+	description: varchar  详细描述
+	tester_id : int   测试人员Id
+	assign_id: int  指派修改的人的id
+	project_id: int  所属项目id
+	status:  int  状态   1: 待修改， 2： 已完成，  3： 已拒绝
+	level:  int  级别   1： 一般  2：严重

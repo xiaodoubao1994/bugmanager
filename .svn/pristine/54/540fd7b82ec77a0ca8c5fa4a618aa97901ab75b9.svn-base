@@ -1,0 +1,42 @@
+<?php 
+require_once("config.php");
+
+$username = $_GET["userName"];
+$userpwd = $_GET["userPwd"]; //接受用户传来的参数
+
+
+$str_sql = "select userpwd from userinfo where username = '$username' "; //3:书写需要执行的指令
+
+$str_result =  mysql_query($str_sql);//4执行该语句  返回的是一个资源文件
+
+
+$result  = mysql_fetch_array($str_result); //获取资源里面的第一条数据
+
+
+$oldpwd  = $result[0];
+
+if($oldpwd){ //表示用密码不为空
+    if($oldpwd == $userpwd){
+    		$str_sql = "select * from userinfo where username = '$username' ";
+    		$str_type =  mysql_query($str_sql);
+    		$resultType  = mysql_fetch_array($str_type);
+			$type  = $resultType[3];
+
+            session_start();
+            $_SESSION['userid'] = $resultType["0"];
+            $_SESSION['username'] = $resultType["1"];
+
+
+			echo "1.";
+			echo "$type";
+    }else{
+        echo "2";
+    }
+
+
+
+}else{
+    echo "3";
+}
+
+ ?>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>登录</title>
+	<style>
+		* {
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            height: 100%;
+        }
+
+        body {
+            height: 100%;
+            font-size: 14px;
+            background: url("images/bg_1.jpg") right bottom no-repeat;
+            -webkit-background-size: 100% 100%;
+            background-size: 100% 100%;
+        }
+
+        .box {
+            width: 240px;
+            height: 180px;
+            padding: 20px;
+            position: absolute;
+            background: url("images/bg_2.gif");
+            -webkit-background-size: 100% 100%;
+            background-size: 100% 100%;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            border: 1px solid #568620;
+        }
+        .box .name {
+			margin: 50px 0 10px;
+        }
+        .btn {
+			margin-top: 10px;
+			text-align: center;	
+        }
+        #hidd {
+        	position: absolute;
+        	left: 0;
+        	top: 0;
+        	right: 0;
+        	bottom: 0;
+        	background: #fff;
+        	font-size: 30px;
+        	line-height: 180px;
+        	color:red;
+        	text-align: center;
+        	display: none;
+        }
+	</style>
+</head>
+<body>
+	<div class="box">
+		<div class="name">用户名：<input id="username" type="text" placeholder="请输入用户名"/></div>
+	    <div class="pwd">密&nbsp;&nbsp;&nbsp;码：<input id="userpwd" type="text" placeholder="请输入密码"/></div>
+	    <div class="btn">
+	        <button id="btn">登&nbsp;录</button>
+	    </div>
+	    <div id="hidd"></div>
+	</div>
+</body>
+<script src="js/ajax.js"></script>
+<script src="js/config.js"></script>
+<script>
+	var username = document.getElementById("username");
+	var userpwd = document.getElementById("userpwd");
+	var hidd = document.getElementById("hidd");
+	var btn = document.getElementById("btn");
+
+	
+	btn.onclick = function() {
+		var userName = username.value;
+		var userPwd = userpwd.value;
+
+		ajax({
+			type:"get",
+			url:config.url + "/php/login.php",
+			data:{"userName":userName,"userPwd":userPwd},
+			dataType:"json",
+			success:function(result) {
+				if(parseInt(result) == 1) {
+					show("正在进入...");
+					var type = result * 10 - 10;
+					userName = encodeURIComponent(userName);
+					if(type == 1) {
+						alert("欢迎项目经理" + userName);
+					}
+					if(type == 2) {
+						window.location.href = "html/exploitProject.html?userName=" + userName;
+						// alert("欢迎开发人员" + userName);
+					}
+					if(type == 3) {
+						alert("欢迎测试人员" + userName);
+					}
+				}
+				if(parseInt(result) == 2) {
+					show("密码错误");
+				}
+				if(parseInt(result) == 3) {
+					show("用户名不存在");
+				}
+			}
+		})
+	}
+
+	var timerterval;
+	function show(str) {
+		var num = 2;
+		clearInterval(timerterval);
+		timerterval = setInterval(start, 200);
+		hidd.innerHTML = str;
+		hidd.style.display = "block";
+		function start() {
+			num--;
+			if(num < 0) {
+				hidd.innerHTML = "";
+				hidd.style.display = "none";
+				clearInterval(timerterval);
+			}
+		}
+	}
+	
+</script>
+</html>

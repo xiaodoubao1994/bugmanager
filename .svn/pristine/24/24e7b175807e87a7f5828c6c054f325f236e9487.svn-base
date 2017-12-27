@@ -1,0 +1,28 @@
+<?php
+  require_once('config.php');
+  $title = $_GET["title"];
+  $description = $_GET["description"];
+  $project_id = $_GET["projectId"];
+  $assign_id = $_GET["assign_id"];
+  $tester_id = $_GET["testerId"];
+  $level = $_GET["level"];
+  $status = $_GET["status"];
+
+  $sql = "insert into bug (title, description, project_id, tester_id, assign_id, status, level) values ('$title', '$description', $project_id, $tester_id, $assign_id, $status, $level)";
+
+ // echo $sql;
+
+  $result = mysql_query($sql);
+
+  $count = mysql_affected_rows();
+
+  $json = array();
+  if ($count > 0) {
+    $json["code"] = 1;
+    $json["msg"] = "成功";
+  } else {
+    $json["code"] = 0;
+    $json["msg"] = "失败";
+  }
+  echo json_encode($json);
+?>

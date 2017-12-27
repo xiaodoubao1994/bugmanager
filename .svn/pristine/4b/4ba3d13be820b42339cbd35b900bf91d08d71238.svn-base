@@ -1,0 +1,7 @@
+.nav{background-color: #0394cb;}
+.nav_box{width: 1000px;margin:0 auto;}
+.nav_left{width:140px;padding-left: 20px;line-height:50px;color:white;font-size: 18px;float: left;}
+.nav_right{float: right;width:840px;background-color: #0394cb;height: 50px;color:white;line-height: 50px;}
+.quit{float: right;width: 66px;text-align: center;}
+.quit:hover{color: #e84c3d;cursor: pointer;}
+.nav_hello{float: right;}

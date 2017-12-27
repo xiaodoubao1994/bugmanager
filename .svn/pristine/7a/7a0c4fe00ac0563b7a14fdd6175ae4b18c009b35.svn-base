@@ -1,0 +1,34 @@
+
+
+function getElementsByClassName(classname) {    //兼容 class  属性查找
+    var all = document.getElementsByTagName("*");//查询页面上的所有元素
+    var list = [];
+    for (var i = 0; i < all.length; i++) {
+        var ele = all[i];//找到所有的元素
+
+        var attr = ele.getAttribute("class");//getAttribute查找标签中带有class的属性
+        if (attr == classname) {
+            list.push(ele);
+        }
+    }
+    return list;
+}
+var config2 = {url: "http://qxu1152200052.my3w.com/bugproject"};
+var config = {
+    url: "http://192.168.71.86/bugmanage/www",
+    type: { //用户类型
+      "1": "项目经理",
+      "2": "开发人员",
+      "3": "测试人员"
+    },
+    status: { // bug状态
+        "1": "待修改",
+        "2": "已完成",
+        "3": "已拒绝"
+    },
+    level: { //bug级别
+        "1": "一般",
+        "2": "严重",
+        "3": "高危"
+    }
+}

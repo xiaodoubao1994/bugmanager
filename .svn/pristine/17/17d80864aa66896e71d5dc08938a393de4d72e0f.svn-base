@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>项目列表</title>
+	<link rel="stylesheet" type="text/css" href="../css/public.css">
+	<link rel="stylesheet" href="http://at.alicdn.com/t/font_469843_kazbstwhj4qjjor.css">
+	<link rel="stylesheet" type="text/css" href="../css/guanliyuan.css">
+	<link rel="stylesheet" type="text/css" href="../css/exploit.css">
+	<style>
+
+	</style>
+</head>
+<body>
+	<!--头部-->
+	<div class="head clfix">
+		<div class="head_left">bug管理系统</div>
+		<div class="fr">
+			<div class="head_hello fl">
+				<span class="iconfont icon-renwu"></span>
+				<span>您好，</span>
+				<span id="name">项目经理！</span>
+			</div>
+			<a class="quit fl" id="quit">
+				退出
+			</a>
+		</div>
+	</div>
+	<!--导航-->
+	<div class="nav_lf fl">
+		<ul id="nav_ul">
+
+		</ul>
+	</div>
+	<!-- 右边内容	 -->
+	<div class="right fl">
+	    <table id="content" border="1" cellpadding="0" cellspacing="0">
+	    </table>
+	</div>
+
+
+	<!-- 项目内容部分 -->
+	<div class="item_box" id="item_box">
+		<div class="closed iconfont icon-cha" id="closed"></div>
+		<ul class="information_box clfix">
+			<li>项目信息</li>
+		</ul>
+		<div class="information_text">
+			<div class="information_name">
+				<div class="information_name_text clfix">
+					<div class="information_name_left">项目名称</div>
+					<input type="text"  id="pro-name" class="information_name_input">
+				</div>
+				<div class="information_name_text information_name_miaoshu clfix">
+					<div  class="information_name_left">项目描述</div>
+					<textarea id="pro-desc"></textarea>
+				</div>
+				<div class="information_name_text clfix">
+					<div class="information_name_left">成员管理</div>
+					<div class="information_name_right">
+						<div id="members">
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<input type="button" id="btn-create" class="item_btn" value="确认">
+	</div>
+	<div id="shadow"></div>
+
+
+
+</body>
+<script src="../js/ajax.js"></script>
+<script src="../js/config.js"></script>
+
+<script>
+
+var shadow = document.getElementById("shadow");
+var closed01 = document.getElementById("closed");
+var item_box = document.getElementById("item_box");
+var menbersDiv = document.getElementById('members')
+var btnCreate = document.getElementById('btn-create')
+var editId
+
+var act = "create"
+
+var proNameInput = document.getElementById('pro-name')
+var proDescInput = document.getElementById('pro-desc')
+	getCurrentUser(function(){
+
+		var Name = document.getElementById("name");
+		var quit = document.getElementById("quit");
+		var nav_ul = document.getElementById("nav_ul");
+
+
+
+		quit.onclick = function(){
+			logout();
+		}
+		// id: "1", username: "lili", type: "2"}
+		if(currentUser) {
+			id = currentUser["id"];
+			name = currentUser["username"];
+			type = currentUser["type"];
+		}else {
+			window.location.href = "../index.html";
+		}
+
+		if(type == 1) {
+			var ul = `<li class="skip">员工列表</li>
+					<li class="onli skip">项目列表</li>
+					<li class="skip">bug列表</li>`
+				onskipList("../html/exploitUser.html","../html/exploitProject.html","../html/exploitBug.html");
+		}
+		if(type == 2 || type == 3) {
+			var ul = `<li class="onli skip">项目列表</li>
+				<li class="skip">bug列表</li>`
+			onskipList("../html/exploitProject.html","../html/exploitBug.html");
+		}
+		function onskipList(a,b,c) {
+			nav_ul.innerHTML = ul;
+			var skipList = document.getElementsByClassName("skip");
+				for(let i = 0; i < skipList.length; i++) {   //导航跳转
+				skipList[i].onclick = function() {
+					if(i == 0) {
+						window.location.href = a;
+					}
+					if(i == 1) {
+						window.location.href = b;
+					}
+					if(i == 2) {
+						window.location.href = c;
+					}
+				}
+			}
+		}
+		Name.innerHTML = name + "&nbsp&nbsp!";   //用户名
+
+
+
+
+		var table = document.getElementById('content')
+
+		ajax({
+		    type: 'get',
+		    url: config.url + '/php/projects.php',
+		    dataType: 'json',
+		    success: function(data) {
+		        // console.log(data)
+		        var html = `
+		            <tr class="tbody_top">
+		                <th>项目编号</th>
+		                <th>项目名称</th>
+		                <th>项目人员</th>
+		                <th>操作</th>
+		            </tr>
+		        `
+		        for (var j = 0; j < data.length; j++) {
+		            var project = data[j]
+		            var id = project["id"]
+		            var name = project["name"]
+		            var members = project["members"]
+		            var memberStr = ""
+		            for (var i = 0; i < members.length; i++) {
+		                var member = members[i]
+		                memberStr += member["username"] + "&nbsp;&nbsp;&nbsp;"
+		            }
+		            html += `
+		                <tr>
+		                    <td>${id}</td>
+		                    <td>${name}</td>
+		                    <td>${memberStr}</td>
+		                    <td>
+		                        <span data-id=${id} class="edit" onclick=editById(${id})>详情</span>
+		                        <i>|</i>
+		                        <span data-id=${id} class="delete">删除</span>
+		                    </td>
+		                </tr>
+		            `
+		        }
+		        if(type == 1) {
+		        	 html += `
+				        <tr>
+		                    <td colspan="5"><span id="addUser" class="tbody_top fr mr">新增项目</span></td>
+		                </tr>
+		            `
+		        }
+		        table.innerHTML = html
+				// ------------------------------------------------------------------------
+				var add_box = document.getElementById("addUser");
+				add_box.onclick = function(){
+					shadow.style.display = "block";
+					item_box.style.display = "block";
+				}
+		    }
+		})
+
+
+
+
+
+		closed01.onclick = function(){
+			shadow.style.display = "none";
+			item_box.style.display = "none";
+		}
+
+		// 创建
+		btnCreate.onclick = function() {
+			var proName = proNameInput.value
+			var proDesc = proDescInput.value
+
+			var members = []
+
+			var membersBox = menbersDiv.getElementsByClassName('member-box')
+
+			for (var i = 0; i < membersBox.length; i++) {
+				var box = membersBox[i]
+				if (box.checked) {
+					members.push(box.value)
+				}
+			}
+			console.log("members:", members)
+
+			ajax({
+				type: 'get',
+				dataType:'json',
+				url: config.url + '/php/createproject.php',
+				data: {
+					'id': editId,
+					act: act,
+					name: proName,
+					description: proDesc,
+					members: members
+				},
+				success: function(json) {
+					alert(json['msg'])
+					window.location.reload();
+					shadow.style.display = "none";
+					item_box.style.display = "none";
+				}
+			})
+		}
+	});
+
+
+	// var username = currentUser["username"];
+
+	// }else {
+	// 	window.location.href = "../index.html";
+	// }
+
+// 点击编辑按钮
+function editById(id) {
+	editId = id
+	act = "update"
+	shadow.style.display = "block";
+	item_box.style.display = "block";
+	getUser()
+	ajax({
+		type: 'get',
+		url: config.url + '/php/getprojectbyid.php',
+		dataType: 'json',
+		data: {id: id},
+		success: function(json) {
+			// proNameInput  proDescInput  membersBox
+			// console.log(data)
+			var data = json[0]
+			proNameInput.value = data["name"]
+			proDescInput.value = data["description"]
+
+			var members = []
+			for (var i=0; i < data["members"].length; i++) {
+			    var member = data["members"][i]
+				members.push(member["id"])
+			}
+			console.log(members)
+			var membersBox = menbersDiv.getElementsByClassName('member-box')
+			for (var i=0; i < membersBox.length; i++) {
+			    var mb = membersBox[i]
+				if (members.includes(mb.value)) {
+					mb.checked = true
+				}
+			}
+
+		}
+	})
+}
+
+
+
+getUser()
+function getUser(){
+	ajax({
+		type: 'get',
+		url: config.url + '/php/users.php',
+		dataType: 'json',
+		success: function(data){
+			// console.log(data)
+			var str = ""
+			for (var i = 0; i < data.length; i++) {
+				var user = data[i]
+				var userid = user['id']
+				var username = user['username']
+				var userpwd = user['userpwd']
+				var type = user['type']
+				str += `
+					<label><input type="checkbox" class="member-box" value=${userid}>${username}</label>
+				`
+			}
+			menbersDiv.innerHTML = str
+		}
+	})
+}
+
+
+
+
+</script>
+</html>

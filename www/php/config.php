@@ -1,0 +1,14 @@
+<?php
+
+@header('content-type:text/html;charset=utf8');
+@header('Access-Control-Allow-Origin:*');
+
+// $varcon = mysql_connect("localhost:3306","root","root");// 1用户名和密码链接到指定的地方
+// mysql_select_db("bugmanageproject");
+
+$varcon = mysql_connect("120.78.94.207","root","root");// 1用户名和密码链接到指定的地方
+// mysql_query("set names utf8;");
+mysql_set_charset('utf8'); 
+mysql_select_db("bugmanage");
+
+?>

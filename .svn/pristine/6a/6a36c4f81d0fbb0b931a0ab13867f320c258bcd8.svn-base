@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>开发人员</title>
+	<link rel="stylesheet" type="text/css" href="../css/public.css">
+	<link rel="stylesheet" href="http://at.alicdn.com/t/font_469843_kazbstwhj4qjjor.css">
+	<link rel="stylesheet" type="text/css" href="../css/guanliyuan.css">
+	<link rel="stylesheet" type="text/css" href="../css/exploit.css">
+	<style>
+
+	</style>
+</head>
+<body>
+	<!--头部-->
+	<div class="head clfix">
+		<div class="head_left">bug管理系统</div>
+		<div class="fr">
+			<div class="head_hello fl">
+				<span class="iconfont icon-renwu"></span>
+				<span>您好，</span>
+				<span id="name">项目经理！</span>
+			</div>
+			<a class="quit fl" id="quit">
+				退出
+			</a>
+		</div>
+	</div>
+	<!--导航-->
+	<div class="nav_lf fl">
+		<ul>
+			<li class="skip">项目列表</li>
+			<li class="onli skip">bug列表</li>
+		</ul>
+	</div>
+	<!-- 右边内容	 -->
+	<div class="right fl">
+		<table id="content" border="1" cellpadding="0" cellspacing="0">
+			<tbody class="tbody_top">
+				<tr>
+	                <th>bug编号</th>
+	                <th>项目名称</th>
+	                <th>bug描述</th>
+	                <th>下一处理人</th>
+	                <th>状态</th>
+	            </tr>
+        	</tbody>
+        	<tbody>
+	         	<tr>
+                    <td>1</td>
+                    <td>如来</td>
+                    <td>ajaxbug</td>
+                    <td>袁晓</td>
+                    <td><span class="edit bugStatus">已完成</span></td>
+                </tr>
+	            <tr>
+	                <td>7</td>
+	                <td>项目9</td>
+	                <td>php数据</td>
+	                <td>李梦成</td>
+	                <td><span class="edit bugStatus">已完成</span></td>
+	            </tr>
+        	</tbody>
+	    </table>
+	</div>
+</body>
+<script src="../js/ajax.js"></script>
+<script src="../js/config.js"></script>
+<script>
+
+	getCurrentUser(function(){
+		var skipList = document.getElementsByClassName("skip");
+		var Name = document.getElementById("name");
+		var quit = document.getElementById("quit");
+		quit.onclick = function(){
+			logout();
+		}
+		// id: "1", username: "lili", type: "2"}
+		if(currentUser) {
+			id = currentUser["id"];
+			name = currentUser["username"];
+			type = currentUser["type"];
+		}else {
+			// window.location.href = "../index.html";
+		}
+		Name.innerHTML = name + "&nbsp&nbsp!";   //用户名
+		for(let i = 0; i < skipList.length; i++) {   //导航跳转
+			skipList[i].onclick = function() {
+				if(i == 0) {
+					window.location.href = "../html/exploitProject.html";
+				}
+				if(i == 1) {
+					window.location.href = "../html/exploitBug.html";
+				}
+			}
+		}
+
+
+
+
+		
+	});
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</html>

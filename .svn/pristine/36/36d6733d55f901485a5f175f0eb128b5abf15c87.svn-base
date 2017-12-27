@@ -1,0 +1,45 @@
+<?php
+  require_once('config.php');
+
+
+  $name = $_GET["name"];
+  $description = $_GET["description"];
+
+  $sql = "insert into project (name, description) values ('$name', $description)";
+
+  $result = mysql_query($sql);
+
+  $count = mysql_affected_rows();
+
+  $project_id = mysql_insert_id();
+
+  $members = $_GET["members"];
+
+  $users = explode(',', $members);
+
+  $sql_2 = "";
+  foreach ($users as $user) {
+    $sql_2 = "insert into project_user (project_id, user_id) values ($project_id, $user);";
+     $result_2 = mysql_query($sql_2);
+    $count_2 = mysql_affected_rows($varcon);
+    // echo $sql_2;  
+  }
+
+  // echo $sql_2;
+
+ 
+  // echo $count_2;
+
+  $json = array();
+
+  if ($count_2 != 0) {
+    $json["code"] = 1;
+    $json["msg"] = "成功";
+  } else {
+    $json["code"] = 0;
+    $json["msg"] = "失败";
+  }
+  echo json_encode($json);
+
+
+?>

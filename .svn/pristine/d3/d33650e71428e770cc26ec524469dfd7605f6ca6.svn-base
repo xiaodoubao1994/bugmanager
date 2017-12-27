@@ -1,0 +1,11 @@
+项目部分:
+  获取所有项目 GET projects.php
+  新增项目     get createproject.php  参数 name description   members[]
+  根据id获取项目  get  getprojectbyid.php   参数  id
+
+  
+用户：
+  获取所有用户 get 'users.php'
+
+
+

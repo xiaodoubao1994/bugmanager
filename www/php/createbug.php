@@ -1,0 +1,34 @@
+<?php
+  require_once('config.php');
+  $act = $_GET["act"];  // create   或  update
+  $title = $_GET["title"];
+  $description = $_GET["description"];
+  $project_id = $_GET["projectId"];
+  $assign_id = $_GET["assign_id"];
+  $tester_id = $_GET["testerId"];
+  $level = $_GET["level"];
+  $status = $_GET["status"];
+
+  if ($act == 'create') {
+    $sql = "insert into bug (title, description, project_id, tester_id, assign_id, status, level) values ('$title', '$description', $project_id, $tester_id, $assign_id, $status, $level)";
+  } else if($act == "update") {
+    $id = $_GET["id"];
+    $sql = "update bug set title = '$title', description = '$description', project_id = $project_id, tester_id = $tester_id, assign_id = $assign_id, status = $status, level = $level where id = $id";
+  }
+
+  // echo $sql;
+
+  $result = mysql_query($sql);
+
+  $count = mysql_affected_rows();
+
+  $json = array();
+  if ($count > 0) {
+    $json["code"] = 1;
+    $json["msg"] = "成功";
+  } else {
+    $json["code"] = 0;
+    $json["msg"] = "失败";
+  }
+  echo json_encode($json);
+?>

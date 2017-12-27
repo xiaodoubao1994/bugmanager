@@ -1,0 +1,2 @@
+var config = {url: "http://localhost/bugmanage/www"};
+var config2 = {url: "http://qxu1152200052.my3w.com/bugproject"};

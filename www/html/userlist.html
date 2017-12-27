@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+
+<table id="table">
+    
+</table>
+
+  
+</body>
+<script src="../js/ajax.js"></script>
+<script src="../js/config.js"></script>
+
+<script type="text/javascript">
+
+    
+var table = document.getElementById("table")
+
+ajax({
+    type: 'get',
+    url: config.url + '/php/users.php',
+    dataType: 'json',
+    success: function(data){
+        var html = `
+            <tr>
+                <th>员工编号</th>
+                <th>员工姓名</th>
+                <th>员工密码</th>
+                <th>员工职位</th>
+                <th>操作</th>
+            </tr>
+        `
+        for (var i = 0; i < data.length; i++) {
+            var user = data[i]
+            var userid = user["id"]
+            var username = user["username"]
+            var userpwd = user["userpwd"]
+            var usertype = config.type[user["type"]]
+
+            html += `
+                <tr>
+                    <td>${userid}</td>
+                    <td>${username}</td>
+                    <td>${userpwd}</td>
+                    <td>${usertype}</td>
+                    <td>
+                        <a href="#" data-id=${userid}>修改</a>
+                        <a href="#" data-id=${userid}>删除</a>
+                    </td>
+                </tr>
+            `
+        }
+        table.innerHTML = html
+    }
+})
+
+
+    
+</script>
+
+</html>

@@ -1,0 +1,7 @@
+var str = window.location.search;
+if(str) {
+	str = str.split("?")[1];
+	str = str.split("=")[1];
+}else {
+	window.location.href = "../index.html";
+}

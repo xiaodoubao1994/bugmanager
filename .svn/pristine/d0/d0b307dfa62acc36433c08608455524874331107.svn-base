@@ -1,0 +1,65 @@
+/* CSS 初始化设置 */
+@charset "utf-8";
+html, body, div, ul, ol, li, dl, dt, dd, form, fieldset, h1, h2, h3, h4, h5, h6, p {
+    margin: 0px;
+    padding: 0px;
+}
+
+html {
+    font-size: 14px;
+    font-family: "微软雅黑";
+}
+
+html, body {
+    height: 100%;
+}
+
+img {
+    border: 0;
+    vertical-align: top;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+li {
+    list-style: none;
+}
+
+input:focus, textarea:focus, button:focus, select:focus {
+    outline: none;
+}
+
+textarea {
+    resize: none;
+}
+
+input[type="button"], input[type="submit"], input[type="reset"], input[type="file"] {
+    cursor: pointer;
+}
+
+.clearfix:after {
+    content: ".";
+    clear: both;
+    display: block;
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+}
+
+.clearfix {
+    zoom: 1;
+}
+
+.fl {
+    float: left;
+}
+
+.fr {
+    float: right;
+}
+/*以上是公共样式*/
+
+

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>开发人员</title>
+    <link rel="stylesheet" type="text/css" href="../css/public.css">
+    <link rel="stylesheet" href="http://at.alicdn.com/t/font_469843_kazbstwhj4qjjor.css">
+    <link rel="stylesheet" type="text/css" href="../css/guanliyuan.css">
+    <link rel="stylesheet" type="text/css" href="../css/exploit.css">
+    <style>
+        #new-bug-div{
+            margin:auto;
+            width: 600px;
+        }
+        .bug-item{
+            font-size: 16px;
+            margin-top:20px;
+        }
+        .bug-item input{
+            width: 410px;
+            height: 30px;
+            border-radius:2px;
+            border:1px solid rgb(169, 169, 169);
+            margin-left:50px;
+            padding-left:10px;
+        }
+        .des_text{
+            float: left;    
+        }
+        #desc{
+            padding:10px;
+            float: left;
+            width: 400px;
+            border-radius:2px;
+            margin-left:50px;
+        }
+        select{
+            width: 300px;
+            height: 34px;
+            margin-left:44px;
+        }
+        select option{
+            height: 40px;
+        }
+        #assign{
+            margin-left:29px;
+        }
+        #level{
+            margin-left:13px;
+        }
+        #btn-add{
+            width: 100px;
+            height: 40px;
+            background-color: #0394cb;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 16px;
+            color: white;
+            margin: auto;
+            margin-left: 250px;
+            margin-top: 40px;
+            border:none;
+        }
+        #btn-add:hover{background-color: #0394cb;cursor: pointer;}
+        .bug-item01{
+            margin-top:70px;
+        }
+    </style>
+</head>
+<body>
+<!--头部-->
+<div class="head clfix">
+    <div class="head_left">bug管理系统</div>
+    <div class="fr">
+        <div class="head_hello fl">
+            <span class="iconfont icon-renwu"></span>
+            <span>您好，</span>
+            <span>项目经理！</span>
+        </div>
+        <div class="quit fl">
+            退出
+        </div>
+    </div>
+</div>
+<!--导航-->
+<div class="nav_lf fl">
+    <ul>
+        <li class="onli">项目列表</li>
+        <li>bug列表</li>
+    </ul>
+</div>
+<!-- 右边内容    -->
+
+<div class="right fl">
+    <div id="new-bug-div">
+        <div class="bug-item bug-item01">
+            名称：<input type="text" id="title">
+        </div>
+        <div class="bug-item clfix">
+            <div class="des_text">描述： </div>
+            <textarea id="desc" rows="8" cols="80"></textarea>
+        </div>
+        <div class="bug-item">
+            项目：
+            <select name="" id="project">
+            </select>
+        </div>
+        <div class="bug-item">
+            指派给：
+            <select name="" id="assign">
+            </select>
+        </div>
+        <div class="bug-item">
+            严重级别：
+            <select name="" id="level">
+                <option value="1">一般</option>
+                <option value="2">严重</option>
+                <option value="3">高危</option>
+            </select>
+        </div>  
+         <button id="btn-add">提交</button>
+    </div>
+</div>
+
+<!-- shadow -->
+
+
+
+
+</body>
+<script src="../js/ajax.js"></script>
+<script src="../js/config.js"></script>
+
+<script>
+var e = (sel) => document.getElementById(sel)
+var titleInput = e('title')
+var descInput = e('desc')
+var projectInput = e('project')
+var assignInput = e('assign')
+var levelInput = e('level')
+var btnAdd = e('btn-add')
+
+
+bindProject()
+// project 下拉框绑定数据
+function bindProject() {
+    ajax({
+        type: 'get',
+        url: config.url + '/php/projects.php',
+        dataType: 'json',
+        success: function(data) {
+            // console.log(data)
+            var html = ""
+            for (var i=0; i < data.length; i++) {
+                var project = data[i]
+                var proId = project["id"]
+                var proName = project["name"]
+                html += `
+                    <option value="${proId}">${proName}</option>
+                `
+            }
+            projectInput.innerHTML = html
+        }
+    })
+}
+
+// 绑定指派人员下拉框
+bindAssign()
+function bindAssign() {
+    ajax({
+        type: 'get',
+        url: config.url + "/php/users.php",
+        data: {type: '2'},
+        dataType: 'json',
+        success: function(data){
+            var html = ""
+            for (var i=0; i < data.length; i++) {
+                var assign = data[i]
+                var assignId = assign["id"]
+                var assignName = assign["username"]
+                html += `
+                    <option value="${assignId}">${assignName}</option>
+                `
+            }
+            assignInput.innerHTML = html;
+        }
+    })
+}
+
+// 提交按钮
+btnAdd.onclick = function() {
+    var title = titleInput.value
+    var desc = descInput.value
+    var project_id = projectInput.value
+    var assign_id = assignInput.value
+    var level = levelInput.value
+    var status = 1
+    var tester_id = 4 // 占位， 到时候还要修改，为当前用户
+    ajax({
+        type: 'get',
+        url: config.url + '/php/createbug.php',
+        dataType: 'json',
+        data: {
+            'title': title,
+            'description': desc,
+            'projectId': project_id,
+            'assign_id': assign_id,
+            'level': level,
+            'status': status,
+            'testerId': tester_id
+        },
+        success: function(json) {
+            if(json["code"] == 1){
+                alert("新增成功")
+                window.location.href = 'buglist.html'
+            } else {
+                alert("新增失败")
+            }
+        }
+    })
+}
+</script>
+</html>
